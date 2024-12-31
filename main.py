@@ -24,14 +24,16 @@ except Exception as e:
 
 current_word = {}
 
-flip_timer = None
+
 
 def next_card():
-    global current_word
+    global current_word, flip_timer
+    window.after_cancel(flip_timer)
     current_word = random.choice(data_dict)
     canvas.itemconfig(card_image, image=card_front_img)
     canvas.itemconfig(card_title, text="French", fill="black")
     canvas.itemconfig(card_word, text=current_word["French"], fill="black")
+    window.after(3000, func=flip_card)
 
 
 
@@ -50,7 +52,7 @@ def flip_card():
         canvas.itemconfig(card_title, text="French", fill="black")
         canvas.itemconfig(card_word, text=current_word["French"], fill="black")
 
-    window.after(3000, func=flip_card)
+
 
 
 
@@ -64,6 +66,8 @@ window = Tk()
 window.title("Flashy")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 
+
+flip_timer = window.after(3000, func=flip_card)
 
 
 
@@ -79,7 +83,6 @@ canvas.config(bg=BACKGROUND_COLOR, highlightthickness=0)
 canvas.grid(column=0, row=0, columnspan = 2)
 
 next_card()
-flip_card()
 
 
 
